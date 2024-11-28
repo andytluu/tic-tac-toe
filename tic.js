@@ -1,0 +1,3 @@
+function board(){
+    const gameBoard = [];
+}

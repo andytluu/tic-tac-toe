@@ -1,5 +1,5 @@
 const displayBoard = document.querySelector("#game-board-container");
-const Gameboard = (function board(){
+const Gameboard = (function (){
     const gameBoard = ["","","","","","","","",""];
     
     const display = () => {
@@ -10,4 +10,16 @@ const Gameboard = (function board(){
     return {display};
 })();
 
+function createplayer(name,symbol){
+    return {name,symbol};
+}
+
+const Game = (function (){
+    let player = [
+        createplayer("Player 1", "X"),
+        createplayer("Player 2", "O")
+    ];
+
+    
+})();
 Gameboard.display();

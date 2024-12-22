@@ -1,4 +1,5 @@
 const displayBoard = document.querySelector("#game-board-container");
+const resetBtn = document.querySelector("#reset");
 const Gameboard = (function (){
     let gameBoard = ["","","","","","","","",""];
     
@@ -14,15 +15,9 @@ const Gameboard = (function (){
     };
 
     const update = (index,mark) => {
-
-        if(gameBoard[index] === ""){
             gameBoard[index] = mark;
             display();
-        }
-        else{
-            return;
-        }
-        console.log(gameBoard);
+            console.log(gameBoard);
     };
 
     const checkSpace = (index)=>{
@@ -51,7 +46,11 @@ const Gameboard = (function (){
             return false;
         }
     }
-    return {display,update,checkSpace,checkWin};
+
+    function getGameboard(){
+        return gameBoard;
+    }
+    return {display,update,checkSpace,checkWin,getGameboard};
 })();
 
 function createplayer(name,symbol){
@@ -64,27 +63,36 @@ const Game = (function (){
         createplayer("Player 2", "O")
     ];
     let currentPlayer = 0;
-
+    let playerOneWin = false;
+    let playerTwoWin = false;
     //const gameWin = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], 
     //[1,4,7], [2,5,8], [0,4,8], [2,4,6]];
     const handleClick = (e) =>{
         if(currentPlayer === 0){
             if(Gameboard.checkSpace(parseInt(e.target.id))){
                 Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
-                Gameboard.checkWin(player[currentPlayer].symbol);
+                playerOneWin = Gameboard.checkWin(player[currentPlayer].symbol);
                 currentPlayer = 1;
             }
         }
         else{
             if(Gameboard.checkSpace(parseInt(e.target.id))){
                 Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
-                Gameboard.checkWin(player[currentPlayer].symbol);
+                playerTwoWin = Gameboard.checkWin(player[currentPlayer].symbol);
                 currentPlayer = 0;
             }
         }
         //currentPlayer = currentPlayer === 0 ? 1 : 0;
     };
-
-    return {handleClick};
+    
+    const restart = ()=>{
+        for(let i = 0;i<9;i++){
+            Gameboard.update(i,"");
+        }
+        Gameboard.display();
+        console.log(Gameboard.getGameboard());
+    }
+    return {handleClick,restart};
 })();
 Gameboard.display();
+resetBtn.addEventListener("click",()=>{Game.restart()});

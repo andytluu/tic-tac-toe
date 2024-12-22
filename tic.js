@@ -14,11 +14,26 @@ const Gameboard = (function (){
     };
 
     const update = (index,mark) => {
-        gameBoard[index] = mark;
-        display();
+
+        if(gameBoard[index] === ""){
+            gameBoard[index] = mark;
+            display();
+        }
+        else{
+            return;
+        }
         console.log(gameBoard);
     };
-    return {display,update};
+
+    const checkSpace = (index)=>{
+        if(gameBoard[index] === ""){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    return {display,update,checkSpace};
 })();
 
 function createplayer(name,symbol){
@@ -33,14 +48,18 @@ const Game = (function (){
     let currentPlayer = 0;
     const handleClick = (e) =>{
         if(currentPlayer === 0){
-            Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
-            currentPlayer = 1;
+            if(Gameboard.checkSpace(parseInt(e.target.id))){
+                Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
+                currentPlayer = 1;
+            }
         }
         else{
-            Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
-            currentPlayer = 0;
+            if(Gameboard.checkSpace(parseInt(e.target.id))){
+                Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
+                currentPlayer = 0;
+            }
         }
-
+        //currentPlayer = currentPlayer === 0 ? 1 : 0;
     };
 
     return {handleClick};

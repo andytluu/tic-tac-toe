@@ -33,7 +33,25 @@ const Gameboard = (function (){
             return false;
         }
     }
-    return {display,update,checkSpace};
+
+    const checkWin = () =>{
+        if((gameBoard[0] && gameBoard[1] && gameBoard[2]) ||
+        (gameBoard[3] && gameBoard[4] && gameBoard[5]) ||
+        (gameBoard[6] && gameBoard[7] && gameBoard[8]) ||
+        (gameBoard[0] && gameBoard[3] && gameBoard[6]) ||
+        (gameBoard[1] && gameBoard[4] && gameBoard[7]) ||
+        (gameBoard[2] && gameBoard[5] && gameBoard[8]) ||
+        (gameBoard[0] && gameBoard[4] && gameBoard[8]) ||
+        (gameBoard[2] && gameBoard[4] && gameBoard[6])){
+            console.log("win");
+            return true;
+        }
+        else{
+            console.log("1");
+            return false;
+        }
+    }
+    return {display,update,checkSpace,checkWin};
 })();
 
 function createplayer(name,symbol){
@@ -46,16 +64,21 @@ const Game = (function (){
         createplayer("Player 2", "O")
     ];
     let currentPlayer = 0;
+
+    const gameWin = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], 
+    [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
     const handleClick = (e) =>{
         if(currentPlayer === 0){
             if(Gameboard.checkSpace(parseInt(e.target.id))){
                 Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
+                Gameboard.checkWin();
                 currentPlayer = 1;
             }
         }
         else{
             if(Gameboard.checkSpace(parseInt(e.target.id))){
                 Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
+                Gameboard.checkWin();
                 currentPlayer = 0;
             }
         }

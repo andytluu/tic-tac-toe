@@ -1,5 +1,6 @@
 const displayBoard = document.querySelector("#game-board-container");
 const resetBtn = document.querySelector("#reset");
+const winMessage = document.querySelector("#message");
 const Gameboard = (function (){
     let gameBoard = ["","","","","","","","",""];
     
@@ -73,6 +74,9 @@ const Game = (function (){
                 Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
                 playerOneWin = Gameboard.checkWin(player[currentPlayer].symbol);
                 currentPlayer = 1;
+                if(playerOneWin){
+                    winMessage.textContent = "Player 1 wins";
+                }
             }
         }
         else{
@@ -80,6 +84,9 @@ const Game = (function (){
                 Gameboard.update(parseInt(e.target.id),player[currentPlayer].symbol);
                 playerTwoWin = Gameboard.checkWin(player[currentPlayer].symbol);
                 currentPlayer = 0;
+                if(playerTwoWin){
+                    winMessage.textContent = "Player 2 wins";
+                }
             }
         }
         //currentPlayer = currentPlayer === 0 ? 1 : 0;
@@ -90,9 +97,12 @@ const Game = (function (){
             Gameboard.update(i,"");
         }
         Gameboard.display();
+        currentPlayer = 0;
+        winMessage.textContent = "";
         console.log(Gameboard.getGameboard());
+        console.log(currentPlayer);
     }
     return {handleClick,restart};
 })();
 Gameboard.display();
-resetBtn.addEventListener("click",()=>{Game.restart()});
+resetBtn.addEventListener("click",Game.restart);
